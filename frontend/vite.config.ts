@@ -6,5 +6,9 @@ export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
     include: ['jspdf'],
+  },  
+  server: {
+    host: '0.0.0.0',
+    allowedHosts: ['ai-document-analyzer-1.onrender.com'],
   },
 })
