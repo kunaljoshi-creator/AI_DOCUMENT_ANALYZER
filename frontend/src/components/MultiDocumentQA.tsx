@@ -115,7 +115,7 @@ const MultiDocumentQA: React.FC<MultiDocumentQAProps> = ({ onBack }) => {
   }
 
   return (
-    <div className="bg-white shadow rounded-lg p-6 mt-8 w-full max-w-800px">
+    <div className="bg-white shadow rounded-lg p-6 mt-8 w-full max-w-4xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Multi-Document Q&A</h2>
         <button
@@ -132,14 +132,14 @@ const MultiDocumentQA: React.FC<MultiDocumentQAProps> = ({ onBack }) => {
         <div
           {...getRootProps()}
           className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
-            isDragActive ? 'border-primary-500 bg-primary-50' : 'border-gray-300 hover:border-primary-400'
+            isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-blue-400'
           }`}
         >
           <input {...getInputProps()} />
           
           {uploadStatus === 'uploading' ? (
             <div className="flex flex-col items-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mb-4"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
               <p className="text-lg">Uploading documents...</p>
             </div>
           ) : uploadStatus === 'success' ? (
@@ -171,7 +171,7 @@ const MultiDocumentQA: React.FC<MultiDocumentQAProps> = ({ onBack }) => {
             <button
               onClick={handleGenerateSummary}
               disabled={isGeneratingSummary}
-              className="px-4 py-2 bg-primary-600 text-Black rounded hover:bg-primary-700 disabled:bg-gray-400"
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400"
             >
               {isGeneratingSummary ? (
                 <><FiLoader className="animate-spin h-5 w-5 inline mr-1" /> Generating Summary...</>
@@ -185,7 +185,9 @@ const MultiDocumentQA: React.FC<MultiDocumentQAProps> = ({ onBack }) => {
           {documents?.map((doc: Document) => (
             <div 
               key={doc.id} 
-              className={`border p-3 rounded cursor-pointer flex items-center ${selectedDocuments.includes(doc.id) ? 'bg-primary-100 border-primary-500' : ''}`}
+              className={`border p-3 rounded cursor-pointer flex items-center ${
+                selectedDocuments.includes(doc.id) ? 'bg-blue-100 border-blue-500' : 'hover:bg-gray-50'
+              }`}
               onClick={() => handleToggleDocument(doc.id)}
             >
               <FiFileText className="mr-2" />
@@ -205,13 +207,13 @@ const MultiDocumentQA: React.FC<MultiDocumentQAProps> = ({ onBack }) => {
 
       {/* Question Form */}
       <div className="mb-6">
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
             <label className="block text-lg font-semibold mb-2">Ask a Question</label>
             <textarea
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
-              className="w-full border rounded p-2 min-h-[100px]"
+              className="w-full border rounded p-3 min-h-[100px] resize-vertical"
               placeholder="Enter your question about the selected documents..."
               disabled={selectedDocuments.length === 0}
             />
@@ -219,10 +221,14 @@ const MultiDocumentQA: React.FC<MultiDocumentQAProps> = ({ onBack }) => {
           <button
             type="submit"
             disabled={!question.trim() || selectedDocuments.length === 0 || askQuestionMutation.isPending}
-            className="px-4 py-2 bg-primary-600 text-white rounded hover:bg-primary-700 disabled:bg-gray-400 disabled:text-black disabled:border disabled:border-gray-600"
+            className={`px-6 py-2 rounded text-white font-medium ${
+              askQuestionMutation.isPending || !question.trim() || selectedDocuments.length === 0
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-blue-600 hover:bg-blue-700'
+            }`}
           >
             {askQuestionMutation.isPending ? (
-              <><FiLoader className="animate-spin h-5 w-5 inline mr-1" /> Processing...</>
+              <><FiLoader className="animate-spin h-5 w-5 inline mr-2" /> Processing...</>
             ) : (
               'Ask Question'
             )}
