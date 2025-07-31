@@ -21,7 +21,7 @@ def on_startup():
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.FRONTEND_URL],
+    allow_origins=["https://ai-document-analyzer-1.onrender.com"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
